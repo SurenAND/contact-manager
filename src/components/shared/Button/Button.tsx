@@ -20,7 +20,7 @@ const Button = ({
   return (
     <>
       <button
-        className={`self-start font-medium text-xs text-${textColor} ${bgColor} px-${px} py-${py} ${borderRadius} whitespace-nowrap focus:outline-none`}
+        className={`self-start font-semibold text-xs text-${textColor} ${bgColor} px-${px} py-${py} ${borderRadius} whitespace-nowrap focus:outline-none`}
         onClick={onClick}
       >
         {innerText}
