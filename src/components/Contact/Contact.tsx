@@ -1,20 +1,12 @@
+import { ContactType } from "../api/api.type";
 import Button from "../shared/Button/Button";
 
 type ContactProps = {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  relation: string;
-  email: string;
+  data: ContactType;
+  handleDelete: (id: number) => void;
 };
 
-const Contact = ({
-  firstName,
-  lastName,
-  phoneNumber,
-  relation,
-  email,
-}: ContactProps) => {
+const Contact = ({ data, handleDelete }: ContactProps) => {
   return (
     <>
       <div className="md:h-[17vh] border border-gray-200 bg-gray-200 basis-[48%] flex-grow md:flex-grow-0 py-3 px-5 rounded-lg shadow-lg flex flex-col gap-3">
@@ -22,18 +14,22 @@ const Contact = ({
           <h4 className="font-semibold text-sm">
             نام:{" "}
             <span className="font-normal text-gray-700">
-              {firstName + " " + lastName}
+              {data.firstName + " " + data.lastName}
             </span>
           </h4>
           <h4 className="font-semibold text-sm">
             شماره موبایل:{" "}
-            <span className="font-normal text-gray-700">{phoneNumber}</span>
+            <span className="font-normal text-gray-700">
+              {data.phoneNumber}
+            </span>
           </h4>
           <h4 className="font-semibold text-sm">
-            نسبت: <span className="font-normal text-gray-700">{relation}</span>
+            نسبت:{" "}
+            <span className="font-normal text-gray-700">{data.relation}</span>
           </h4>
           <h4 className="font-semibold text-sm">
-            ایمیل: <span className="font-normal text-gray-700">{email}</span>
+            ایمیل:{" "}
+            <span className="font-normal text-gray-700">{data.email}</span>
           </h4>
         </div>
         <div className="flex md:justify-end justify-center">
@@ -52,6 +48,7 @@ const Contact = ({
             px="3"
             py="2"
             borderRadius="rounded-l-lg"
+            onClick={() => handleDelete(data.id)}
           />
         </div>
       </div>

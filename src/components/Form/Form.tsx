@@ -14,7 +14,7 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
 
   const handleSubmit = () => {
     const newContact = {
-      id: new Date().getTime(),
+      // id: new Date().getTime(),
       firstName,
       lastName,
       phoneNumber,
