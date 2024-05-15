@@ -1,25 +1,25 @@
 import TrashIcon from "../../../assets/trash.svg";
 import Button from "../Button/Button";
 type DeleteModalProps = {
-  open: boolean;
+  openDelete: boolean;
   onClose: () => void;
   action: () => void;
 };
 
-const DeleteModal = ({ open, onClose, action }: DeleteModalProps) => {
+const DeleteModal = ({ openDelete, onClose, action }: DeleteModalProps) => {
   return (
     // backdrop
     <div
       onClick={onClose}
       className={`fixed inset-0 flex justify-center items-center transition-colors ${
-        open ? "visible bg-black/20" : "invisible"
+        openDelete ? "visible bg-black/20" : "invisible"
       }`}
     >
       {/* modal */}
       <div
         onClick={(e) => e.stopPropagation()}
         className={`flex flex-col justify-center items-center text-center bg-white rounded-xl shadow p-6 transition-all ${
-          open ? "scale-100 opacity-100" : "scale-125 opacity-0"
+          openDelete ? "scale-100 opacity-100" : "scale-125 opacity-0"
         }`}
       >
         {/* close button */}

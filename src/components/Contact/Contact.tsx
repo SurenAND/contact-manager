@@ -3,14 +3,27 @@ import Button from "../shared/Button/Button";
 
 type ContactProps = {
   data: ContactType;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenDelete: React.Dispatch<React.SetStateAction<boolean>>;
   idToDelete: React.MutableRefObject<number>;
+  setOpenEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  idToEdit: React.MutableRefObject<number>;
 };
 
-const Contact = ({ data, setOpen, idToDelete }: ContactProps) => {
+const Contact = ({
+  data,
+  setOpenDelete,
+  idToDelete,
+  setOpenEdit,
+  idToEdit,
+}: ContactProps) => {
   const handleDeleteBtn = () => {
     idToDelete.current = data.id as number;
-    setOpen(true);
+    setOpenDelete(true);
+  };
+
+  const handleEditBtn = () => {
+    idToEdit.current = data.id as number;
+    setOpenEdit(true);
   };
   return (
     <>
@@ -45,6 +58,7 @@ const Contact = ({ data, setOpen, idToDelete }: ContactProps) => {
             px="3"
             py="2"
             borderRadius="rounded-r-lg"
+            onClick={handleEditBtn}
           />
           <Button
             innerText="حذف"

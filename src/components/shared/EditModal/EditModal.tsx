@@ -1,10 +1,18 @@
-import { useState } from "react";
-import Button from "../shared/Button/Button";
-import SelectOption from "../shared/SelectOption/SelectOption";
-import { ContactType } from "../../api/api.type";
-import { postAPI } from "../../api/POST";
+import { useEffect, useState } from "react";
+import EditIcon from "../../../assets/edit.svg";
+import Button from "../Button/Button";
+import SelectOption from "../SelectOption/SelectOption";
+import { getAPI } from "../../../api/GET";
+import { ContactType } from "../../../api/api.type";
 
-const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
+type EditModalProps = {
+  openEdit: boolean;
+  onClose: () => void;
+  action: (id: number, data: ContactType) => void;
+  idToEdit: React.MutableRefObject<number>;
+};
+
+const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
   // States
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -12,46 +20,45 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
   const [relation, setRelation] = useState("نسبت");
   const [email, setEmail] = useState("");
 
-  // validation states
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [phoneNumberError, setPhoneNumberError] = useState(false);
-  const [relationError, setRelationError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-
-  const handleSubmit = () => {
-    if (firstName && lastName && phoneNumber && relation !== "نسبت" && email) {
-      const newContact = {
-        firstName,
-        lastName,
-        phoneNumber,
-        relation,
-        email,
-      };
-      postAPI("contacts", newContact).then((res) => {
-        setContacts((prev: ContactType[]) => [...prev, res]);
+  useEffect(() => {
+    const id = idToEdit.current;
+    if (!!id && !!openEdit) {
+      getAPI(`contacts/${id}`).then((res: any) => {
+        setFirstName(res.firstName);
+        setLastName(res.lastName);
+        setPhoneNumber(res.phoneNumber);
+        setRelation((prev) => (prev = res.relation));
+        setEmail(res.email);
       });
-
-      // clear inputs
-      setFirstName((prev) => (prev = ""));
-      setLastName((prev) => (prev = ""));
-      setPhoneNumber((prev) => (prev = ""));
-      setRelation((prev) => (prev = "نسبت")); //FIXME
-      setEmail((prev) => (prev = ""));
-    } else {
-      !!!firstName && setFirstNameError(true);
-      !!!lastName && setLastNameError(true);
-      !!!phoneNumber && setPhoneNumberError(true);
-      relation === "نسبت" && setRelationError(true);
-      !!!email && setEmailError(true);
     }
-  };
+  }, [openEdit]);
 
   return (
-    <div className="w-1/2 flex flex-col justify-center items-center gap-2">
-      <h2 className="font-bold text-lg">اضافه / ویرایش کاربران</h2>
+    // backdrop
+    <div
+      onClick={onClose}
+      className={`fixed inset-0 flex justify-center items-center transition-colors ${
+        openEdit ? "visible bg-black/20" : "invisible"
+      }`}
+    >
+      {/* modal */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`flex flex-col justify-center items-center gap-5 text-center bg-white rounded-xl shadow p-6 transition-all ${
+          openEdit ? "scale-100 opacity-100" : "scale-125 opacity-0"
+        }`}
+      >
+        {/* close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 bg-white hover:bg-gray-50 hover:text-gray-600"
+        >
+          X
+        </button>
+        {/* edit icon */}
+        <img className="w-12 mt-5" src={EditIcon} alt="edit" />
+        {/* edit form */}
 
-      <div className="w-full flex flex-col justify-center gap-3 border border-gray-100 shadow-lg rounded-lg py-2 px-5">
         {/* First Name */}
         <div className="flex flex-col justify-center gap-1">
           <label
@@ -68,14 +75,14 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             value={firstName}
             onChange={(e) => {
               setFirstName(e.target.value);
-              setFirstNameError(false);
+              //   setFirstNameError(false);
             }}
           />
-          {firstNameError && (
+          {/* {firstNameError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نام را وارد کنید
             </p>
-          )}
+          )} */}
         </div>
 
         {/* Last Name */}
@@ -94,14 +101,14 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             value={lastName}
             onChange={(e) => {
               setLastName(e.target.value);
-              setLastNameError(false);
+              //   setLastNameError(false);
             }}
           />
-          {lastNameError && (
+          {/* {lastNameError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نام خانوادگی را وارد کنید
             </p>
-          )}
+          )} */}
         </div>
 
         {/* Phone Number */}
@@ -120,14 +127,14 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             value={phoneNumber}
             onChange={(e) => {
               setPhoneNumber(e.target.value);
-              setPhoneNumberError(false);
+              //   setPhoneNumberError(false);
             }}
           />
-          {phoneNumberError && (
+          {/* {phoneNumberError && (
             <p className="text-xs text-red-700 select-none">
               لطفا شماره موبایل را وارد کنید
             </p>
-          )}
+          )} */}
         </div>
 
         {/* Relation */}
@@ -138,14 +145,14 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             value={relation}
             onChange={(e) => {
               setRelation(e.target.value);
-              setRelationError(false);
+              //   setRelationError(false);
             }}
           />
-          {relationError && (
+          {/* {relationError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نسبت خود را وارد کنید
             </p>
-          )}
+          )} */}
         </div>
 
         {/* Email */}
@@ -164,28 +171,46 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setEmailError(false);
+              //   setEmailError(false);
             }}
           />
-          {emailError && (
+          {/* {emailError && (
             <p className="text-xs text-red-700 select-none">
               لطفا ایمیل خود را وارد کنید
             </p>
-          )}
+          )} */}
         </div>
-
-        {/* Add Button */}
-        <Button
-          innerText="اضافه کردن"
-          bgColor="bg-gray-500"
-          textColor="white"
-          px="3"
-          py="2"
-          onClick={handleSubmit}
-        />
+        {/* buttons */}
+        <div className="flex gap-4">
+          <Button
+            innerText="انصراف"
+            bgColor="bg-gray-400"
+            textColor="white"
+            px="5"
+            py="2"
+            onClick={onClose}
+          />
+          <Button
+            innerText="ویرایش"
+            bgColor="bg-blue-500"
+            textColor="white"
+            px="5"
+            py="2"
+            onClick={() => {
+              action(idToEdit.current, {
+                firstName,
+                lastName,
+                phoneNumber,
+                relation,
+                email,
+              });
+              onClose();
+            }}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-export default Form;
+export default EditModal;

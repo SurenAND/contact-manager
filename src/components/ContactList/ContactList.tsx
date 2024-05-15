@@ -4,6 +4,8 @@ import { getAPI } from "../../api/GET";
 import { ContactType } from "../../api/api.type";
 import { deleteAPI } from "../../api/DELETE";
 import DeleteModal from "../shared/DeleteModal/DeleteModal";
+import EditModal from "../shared/EditModal/EditModal";
+import { putAPI } from "../../api/PUT";
 
 const ContactList = ({
   contacts,
@@ -13,16 +15,25 @@ const ContactList = ({
   setContacts: (contacts: ContactType[]) => void;
 }) => {
   const [isDelete, setIsDelete] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const idToDelete = useRef<number>(0);
+  const idToEdit = useRef<number>(0);
 
   useEffect(() => {
     getAPI("contacts").then((res) => setContacts(res));
-  }, [isDelete]);
+  }, [isDelete, isEdit]);
 
   const handleDelete = (id: number) => {
     deleteAPI("contacts", id).then(() => {
       setIsDelete((prev) => !prev);
+    });
+  };
+
+  const handleEdit = (id: number, data: ContactType) => {
+    putAPI("contacts", id, data).then(() => {
+      setIsEdit((prev) => !prev);
     });
   };
 
@@ -35,16 +46,24 @@ const ContactList = ({
             <Contact
               key={item.id}
               data={item}
-              setOpen={setOpen}
+              setOpenDelete={setOpenDelete}
+              setOpenEdit={setOpenEdit}
               idToDelete={idToDelete}
+              idToEdit={idToEdit}
             />
           );
         })}
       </div>
       <DeleteModal
-        open={open}
-        onClose={() => setOpen(false)}
+        openDelete={openDelete}
+        onClose={() => setOpenDelete(false)}
         action={() => handleDelete(idToDelete.current)}
+      />
+      <EditModal
+        openEdit={openEdit}
+        onClose={() => setOpenEdit(false)}
+        action={handleEdit}
+        idToEdit={idToEdit}
       />
     </div>
   );
