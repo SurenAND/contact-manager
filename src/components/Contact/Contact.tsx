@@ -48,7 +48,7 @@ const Contact = ({ data, handleDelete }: ContactProps) => {
             px="3"
             py="2"
             borderRadius="rounded-l-lg"
-            onClick={() => handleDelete(data.id)}
+            onClick={() => handleDelete(data.id as number)}
           />
         </div>
       </div>

@@ -12,25 +12,40 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
   const [relation, setRelation] = useState("نسبت");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = () => {
-    const newContact = {
-      // id: new Date().getTime(),
-      firstName,
-      lastName,
-      phoneNumber,
-      relation,
-      email,
-    };
-    postAPI("contacts", newContact).then((res) => {
-      setContacts((prev: ContactType[]) => [...prev, res]);
-    });
+  // validation states
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [relationError, setRelationError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
-    // clear inputs
-    setFirstName("");
-    setLastName("");
-    setPhoneNumber("");
-    setRelation("نسبت");
-    setEmail("");
+  const handleSubmit = () => {
+    if (firstName && lastName && phoneNumber && relation !== "نسبت" && email) {
+      const newContact = {
+        firstName,
+        lastName,
+        phoneNumber,
+        relation,
+        email,
+      };
+      postAPI("contacts", newContact).then((res) => {
+        setContacts((prev: ContactType[]) => [...prev, res]);
+      });
+
+      // clear inputs
+      setFirstName("");
+      setLastName("");
+      setPhoneNumber("");
+      setRelation("نسبت");
+      setEmail("");
+    } else {
+      //TODO
+      !!!firstName && setFirstNameError(true);
+      !!!lastName && setLastNameError(true);
+      !!!phoneNumber && setPhoneNumberError(true);
+      relation === "نسبت" && setRelationError(true);
+      !!!email && setEmailError(true);
+    }
   };
 
   return (
@@ -52,9 +67,12 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             id="first-name"
             placeholder="نام ..."
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+              setFirstNameError(false);
+            }}
           />
-          {!firstName && (
+          {firstNameError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نام را وارد کنید
             </p>
@@ -75,9 +93,12 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             id="last-name"
             placeholder="نام خانوادگی ..."
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => {
+              setLastName(e.target.value);
+              setLastNameError(false);
+            }}
           />
-          {!lastName && (
+          {lastNameError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نام خانوادگی را وارد کنید
             </p>
@@ -98,9 +119,12 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             id="phone-number"
             placeholder="شماره موبایل ..."
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
+              setPhoneNumberError(false);
+            }}
           />
-          {!phoneNumber && (
+          {phoneNumberError && (
             <p className="text-xs text-red-700 select-none">
               لطفا شماره موبایل را وارد کنید
             </p>
@@ -113,9 +137,12 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
           <SelectOption
             values={["دوست", "همکار", "خانواده"]}
             value={relation}
-            onChange={(e) => setRelation(e.target.value)}
+            onChange={(e) => {
+              setRelation(e.target.value);
+              setRelationError(false);
+            }}
           />
-          {relation === "نسبت" && (
+          {relationError && (
             <p className="text-xs text-red-700 select-none">
               لطفا نسبت خود را وارد کنید
             </p>
@@ -136,9 +163,12 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
             id="email-address"
             placeholder="ایمیل ..."
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError(false);
+            }}
           />
-          {!email && (
+          {emailError && (
             <p className="text-xs text-red-700 select-none">
               لطفا ایمیل خود را وارد کنید
             </p>
