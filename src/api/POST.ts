@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ContactType } from "./api.type";
-import { PATHS } from "../../constant/path";
+import { PATHS } from "../constant/path";
 
 // Add a contact using the API
 export async function postAPI(

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Layout from "../Layout/Layout";
 import Form from "../Form/Form";
 import ContactList from "../ContactList/ContactList";
-import { ContactType } from "../api/api.type";
+import { ContactType } from "../../api/api.type";
 
 const Home = () => {
   const [contacts, setContacts] = useState<ContactType[]>([]);

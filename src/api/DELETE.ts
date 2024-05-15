@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PATHS } from "../../constant/path";
+import { PATHS } from "../constant/path";
 
 // Delete a contact using the API
 export async function deleteAPI(

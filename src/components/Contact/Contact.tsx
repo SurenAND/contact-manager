@@ -1,12 +1,17 @@
-import { ContactType } from "../api/api.type";
+import { ContactType } from "../../api/api.type";
 import Button from "../shared/Button/Button";
 
 type ContactProps = {
   data: ContactType;
-  handleDelete: (id: number) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  idToDelete: React.MutableRefObject<number>;
 };
 
-const Contact = ({ data, handleDelete }: ContactProps) => {
+const Contact = ({ data, setOpen, idToDelete }: ContactProps) => {
+  const handleDeleteBtn = () => {
+    idToDelete.current = data.id as number;
+    setOpen(true);
+  };
   return (
     <>
       <div className="md:h-[17vh] border border-gray-200 bg-gray-200 basis-[48%] flex-grow md:flex-grow-0 py-3 px-5 rounded-lg shadow-lg flex flex-col gap-3">
@@ -48,7 +53,7 @@ const Contact = ({ data, handleDelete }: ContactProps) => {
             px="3"
             py="2"
             borderRadius="rounded-l-lg"
-            onClick={() => handleDelete(data.id as number)}
+            onClick={handleDeleteBtn}
           />
         </div>
       </div>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "../shared/Button/Button";
 import SelectOption from "../shared/SelectOption/SelectOption";
-import { ContactType } from "../api/api.type";
-import { postAPI } from "../api/POST";
+import { ContactType } from "../../api/api.type";
+import { postAPI } from "../../api/POST";
 
 const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
   // States

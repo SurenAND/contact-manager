@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PATHS } from "../../constant/path";
+import { PATHS } from "../constant/path";
 import { ContactType } from "./api.type";
 
 // Fetch contacts from the API

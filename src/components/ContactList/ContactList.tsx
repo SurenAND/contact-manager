@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Contact from "../Contact/Contact";
-import { getAPI } from "../api/GET";
-import { ContactType } from "../api/api.type";
-import { deleteAPI } from "../api/DELETE";
+import { getAPI } from "../../api/GET";
+import { ContactType } from "../../api/api.type";
+import { deleteAPI } from "../../api/DELETE";
+import DeleteModal from "../shared/DeleteModal/DeleteModal";
 
 const ContactList = ({
   contacts,
@@ -12,6 +13,9 @@ const ContactList = ({
   setContacts: (contacts: ContactType[]) => void;
 }) => {
   const [isDelete, setIsDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+  const idToDelete = useRef<number>(0);
+
   useEffect(() => {
     getAPI("contacts").then((res) => setContacts(res));
   }, [isDelete]);
@@ -28,10 +32,20 @@ const ContactList = ({
       <div className="w-full h-[400px] bg-gray-100 flex flex-wrap items-start gap-5 overflow-y-auto border border-gray-100 shadow-lg rounded-lg py-2 px-5">
         {contacts.map((item) => {
           return (
-            <Contact key={item.id} data={item} handleDelete={handleDelete} />
+            <Contact
+              key={item.id}
+              data={item}
+              setOpen={setOpen}
+              idToDelete={idToDelete}
+            />
           );
         })}
       </div>
+      <DeleteModal
+        open={open}
+        onClose={() => setOpen(false)}
+        action={() => handleDelete(idToDelete.current)}
+      />
     </div>
   );
 };
