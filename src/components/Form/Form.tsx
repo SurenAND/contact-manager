@@ -3,6 +3,7 @@ import Button from "../shared/Button/Button";
 import SelectOption from "../shared/SelectOption/SelectOption";
 import { ContactType } from "../../api/api.type";
 import { postAPI } from "../../api/POST";
+import { useTheme } from "../../hooks/useTheme";
 
 const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
   // States
@@ -47,15 +48,30 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
     }
   };
 
+  // change theme
+  const { mode } = useTheme();
+
   return (
     <div className="w-1/2 flex flex-col justify-center items-center gap-2">
-      <h2 className="font-bold text-lg">اضافه / ویرایش کاربران</h2>
+      <h2
+        className={`font-bold text-lg ${
+          mode === "dark" ? "text-white" : "text-black"
+        }`}
+      >
+        اضافه / ویرایش کاربران
+      </h2>
 
-      <div className="w-full flex flex-col justify-center gap-3 border border-gray-100 shadow-lg rounded-lg py-2 px-5">
+      <div
+        className={`w-full flex flex-col justify-center gap-3 border border-gray-100 shadow-lg rounded-lg py-2 px-5 ${
+          mode === "dark" ? "bg-gray-500" : "bg-white"
+        }`}
+      >
         {/* First Name */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="first-name"
           >
             نام:
@@ -81,7 +97,9 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
         {/* Last Name */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="last-name"
           >
             نام خانوادگی:
@@ -107,7 +125,9 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
         {/* Phone Number */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="phone-number"
           >
             شماره موبایل:
@@ -132,7 +152,13 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
 
         {/* Relation */}
         <div className="flex flex-col justify-center gap-1">
-          <label className="text-sm font-semibold select-none">نسبت:</label>
+          <label
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
+            نسبت:
+          </label>
           <SelectOption
             values={["دوست", "همکار", "خانواده"]}
             value={relation}
@@ -151,7 +177,9 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
         {/* Email */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="email-address"
           >
             ایمیل:
@@ -177,7 +205,7 @@ const Form = ({ setContacts }: { setContacts: (contacts: any) => void }) => {
         {/* Add Button */}
         <Button
           innerText="اضافه کردن"
-          bgColor="bg-gray-500"
+          bgColor={mode === "dark" ? "bg-gray-800" : "bg-gray-500"}
           textColor="white"
           px="3"
           py="2"

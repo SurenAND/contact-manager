@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import EditIcon from "../../../assets/edit.svg";
-import Button from "../Button/Button";
-import SelectOption from "../SelectOption/SelectOption";
+import Button from "../../shared/Button/Button";
+import SelectOption from "../../shared/SelectOption/SelectOption";
 import { getAPI } from "../../../api/GET";
 import { ContactType } from "../../../api/api.type";
+import { useTheme } from "../../../hooks/useTheme";
 
 type EditModalProps = {
   openEdit: boolean;
@@ -33,6 +34,9 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
     }
   }, [openEdit]);
 
+  // change theme
+  const { mode } = useTheme();
+
   return (
     // backdrop
     <div
@@ -44,14 +48,16 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
       {/* modal */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`flex flex-col justify-center items-center gap-5 text-center bg-white rounded-xl shadow p-6 transition-all ${
+        className={`flex flex-col justify-center items-center gap-5 text-center rounded-xl shadow p-6 transition-all ${
           openEdit ? "scale-100 opacity-100" : "scale-125 opacity-0"
-        }`}
+        } ${mode === "dark" ? "bg-gray-600" : "bg-white"}`}
       >
         {/* close button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 bg-white hover:bg-gray-50 hover:text-gray-600"
+          className={`absolute top-2 right-2 p-1 rounded-lg text-gray-400  ${
+            mode === "dark" ? "hover:text-white" : "hover:text-gray-600"
+          }`}
         >
           X
         </button>
@@ -62,7 +68,9 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
         {/* First Name */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="first-name"
           >
             نام:
@@ -88,7 +96,9 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
         {/* Last Name */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="last-name"
           >
             نام خانوادگی:
@@ -114,7 +124,9 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
         {/* Phone Number */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="phone-number"
           >
             شماره موبایل:
@@ -139,7 +151,13 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
 
         {/* Relation */}
         <div className="flex flex-col justify-center gap-1">
-          <label className="text-sm font-semibold select-none">نسبت:</label>
+          <label
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
+            نسبت:
+          </label>
           <SelectOption
             values={["دوست", "همکار", "خانواده"]}
             value={relation}
@@ -158,7 +176,9 @@ const EditModal = ({ openEdit, onClose, action, idToEdit }: EditModalProps) => {
         {/* Email */}
         <div className="flex flex-col justify-center gap-1">
           <label
-            className="text-sm font-semibold select-none"
+            className={`text-sm font-semibold select-none ${
+              mode === "dark" ? "text-white" : "text-black"
+            }`}
             htmlFor="email-address"
           >
             ایمیل:
